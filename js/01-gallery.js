@@ -2,10 +2,17 @@ import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
 const galleryList = document.querySelector(".gallery");
-// console.log(galleryList);
+const addListGallery = itemGallery(galleryItems);
 
-const itemGallery = ({ preview, original, description }) => {
-  return `<div class="gallery__item">
+galleryList.insertAdjacentHTML("afterbegin", addListGallery);
+
+galleryList.addEventListener("click", onOpenImg);
+galleryList.addEventListener("keydown", onCloseImg);
+
+function itemGallery(galleryItems) {
+  return galleryItems
+    .map(({ preview, original, description }) => {
+      return `<div class="gallery__item">
       <a class="gallery__link" href="${original}">
         <img
           class="gallery__image"
@@ -15,13 +22,9 @@ const itemGallery = ({ preview, original, description }) => {
         />
       </a>
     </div>`;
-};
-
-const addListGallery = galleryItems.map(itemGallery).join("");
-galleryList.insertAdjacentHTML("afterbegin", addListGallery);
-
-galleryList.addEventListener("click", onOpenImg);
-galleryList.addEventListener("keydown", onCloseImg);
+    })
+    .join("");
+}
 
 function onOpenImg(event) {
   event.preventDefault();
