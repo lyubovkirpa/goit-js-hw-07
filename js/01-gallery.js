@@ -7,7 +7,6 @@ const addListGallery = itemGallery(galleryItems);
 galleryList.insertAdjacentHTML("afterbegin", addListGallery);
 
 galleryList.addEventListener("click", onOpenImg);
-galleryList.addEventListener("keydown", onCloseImg);
 
 function itemGallery(galleryItems) {
   return galleryItems
@@ -26,19 +25,32 @@ function itemGallery(galleryItems) {
     .join("");
 }
 
+let instance;
+
 function onOpenImg(event) {
   event.preventDefault();
   if (event.target.nodeName !== "IMG") {
     return;
   }
 
-  const instance = basicLightbox.create(`
-      <img src="${event.target.getAttribute("data-source")}">
-  `);
+  instance = basicLightbox.create(
+    `
+      <img src="${event.target.dataset.source}" width="800" height="600">
+  `,
+    {
+      onShow: (instance) => {
+        window.addEventListener("keydown", onEskeyPress);
+      },
+      onClose: (instance) => {
+        window.removeEventListener("keydown", onEskeyPress);
+      },
+    }
+  );
+
   instance.show();
 }
 
-function onCloseImg(event) {
+function onEskeyPress(event) {
   if (event.code === "Escape") {
     instance.close();
   }

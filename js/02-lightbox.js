@@ -6,8 +6,6 @@ const pictureMarkup = onCreatePictureMarkup(galleryItems);
 
 listGallery.insertAdjacentHTML("afterbegin", pictureMarkup);
 
-listGallery.addEventListener("click", onOpenModal);
-
 function onCreatePictureMarkup(galleryItems) {
   return galleryItems
     .map(({ preview, original, description }) => {
@@ -22,11 +20,8 @@ function onCreatePictureMarkup(galleryItems) {
     .join("");
 }
 
-function onOpenModal(event) {
-  event.preventDefault();
-
-  var lightbox = new SimpleLightbox(".gallery a", {
-    captionDelay: 250,
-    captionPosition: "bottom",
-  });
-}
+new SimpleLightbox(".gallery a", {
+  captionDelay: 250,
+  captionsData: "alt",
+  captionPosition: "bottom",
+});
